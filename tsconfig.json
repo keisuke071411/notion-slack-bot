@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./lib",
+    "paths": {
+      "~/*": ["./src/*.ts", "src/*.js"],
+      "@/*": ["./src/*.ts", "src/*.js"]
+    }
+  },
+  "exclude": ["node_modules", "lib"],
+  "include": ["src/*.ts", "src/**/*.ts", ".eslintrc.js"]
+}
