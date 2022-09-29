@@ -1,6 +1,5 @@
 import { app, port } from './app';
-import { tweetStatusesUpdate } from './handlers/tweet'
-import { fetchTweetList } from './handlers/fetchTweet'
+import { useDatabaseList } from './handlers/useDatabaseList'
 
 // HTTPサーバーとして起動
 (async () => {
@@ -10,23 +9,11 @@ import { fetchTweetList } from './handlers/fetchTweet'
   console.log("🤖 SlackBot is running!");
 })();
 
-// ツイートするコマンド
-app.command('/tweet', async ({ body, ack, say }) => {
-  try {
-    await ack()
-    tweetStatusesUpdate(body.text)
-
-    say('Success for Tweet!')
-  } catch (error) {
-    console.log(error)
-  }
-});
-
 // 特定のハッシュタグのツイートを取得する(最大10件)
-app.command('/fetch', async ({ body, ack, say }) => {
+app.command('/get_notion', async ({ body, ack, say }) => {
   try {
-    await ack()
-    fetchTweetList(body.text, say)
+    await ack();
+    useDatabaseList(body.text, say)
   } catch (error) {
     console.log(error)
   }
