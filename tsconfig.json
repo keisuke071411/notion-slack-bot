@@ -15,12 +15,12 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "baseUrl": ".",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "paths": {
       "~/*": ["./src/*"]
     }
   },
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["lib", "node_modules"],
   "include": ["src"],
   "compileOnSave": true
 }
