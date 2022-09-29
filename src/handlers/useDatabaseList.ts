@@ -51,7 +51,7 @@ export const useDatabaseList = () => {
           }
         },
       })
-      say(JSON.stringify(res + "good"))
+      say('success!!')
     } catch (error: unknown) {
       console.log(error)
       console.error('useDatabaseList func')
@@ -61,5 +61,21 @@ export const useDatabaseList = () => {
     }
   }
 
-  return { getNotionList, createNotion }
+  const deleteNotion = async (pageId: string, say: SayFn) => {
+    try {
+      const res = await notion.pages.update({
+        page_id: pageId,
+        archived: true
+      })
+      say('success!!')
+    } catch (error: unknown) {
+      console.log(error)
+      console.error('useDatabaseList func')
+      if (error instanceof Error) {
+        say(error.message)
+      }
+    }
+  }
+
+  return { getNotionList, createNotion, deleteNotion }
 }

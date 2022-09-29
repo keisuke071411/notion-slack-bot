@@ -9,7 +9,7 @@ import { useDatabaseList } from './handlers/useDatabaseList'
   console.log("🤖 SlackBot is running!");
 })();
 
-// 特定のハッシュタグのツイートを取得する(最大10件)
+// 特定のタグのタスクを取得する
 app.command('/get_notion', async ({ body, ack, say }) => {
   const { getNotionList } = useDatabaseList()
 
@@ -21,13 +21,24 @@ app.command('/get_notion', async ({ body, ack, say }) => {
   }
 })
 
+// タスクを作成する
 app.command('/create_notion', async ({ body, ack, say }) => {
   const { createNotion } = useDatabaseList()
 
   try {
     await ack();
-    say("good")
     await createNotion(body.text, say);
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+// タスクを削除する
+app.command('/delete_notion', async ({ body, ack, say }) => {
+  const { deleteNotion } = useDatabaseList()
+  try {
+    await ack();
+    await deleteNotion(body.text, say)
   } catch (error) {
     console.log(error);
   }
