@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import { SayFn } from "@slack/bolt";
+import { STATUS_LIST } from "../constant";
 
 export const useDatabaseList = () => {
   const notion = new Client({ auth: process.env.NOTION_KEY })
@@ -51,6 +52,40 @@ export const useDatabaseList = () => {
           }
         },
       })
+
+      if (!res) throw new Error("Failed to create notion")
+
+      say('success!!')
+    } catch (error: unknown) {
+      console.log(error)
+      console.error('useDatabaseList func')
+      if (error instanceof Error) {
+        say(error.message)
+      }
+    }
+  }
+
+  const updateNotion = async (pageId: string, status: string, say: SayFn) => {
+    try {
+      const selectedStatus = STATUS_LIST[status]
+
+      const res = await notion.pages.update({
+        page_id: pageId,
+        properties: {
+          status: {
+            // @ts-ignore
+            status: {
+              "id": selectedStatus.id,
+              "name": selectedStatus.name,
+              "color": selectedStatus.color
+            }
+          }
+        },
+        archived: false
+      })
+
+      if (!res) throw new Error("Failed to update notion")
+
       say('success!!')
     } catch (error: unknown) {
       console.log(error)
@@ -63,10 +98,11 @@ export const useDatabaseList = () => {
 
   const deleteNotion = async (pageId: string, say: SayFn) => {
     try {
-      const res = await notion.pages.update({
+      await notion.pages.update({
         page_id: pageId,
         archived: true
       })
+
       say('success!!')
     } catch (error: unknown) {
       console.log(error)
@@ -77,5 +113,5 @@ export const useDatabaseList = () => {
     }
   }
 
-  return { getNotionList, createNotion, deleteNotion }
+  return { getNotionList, createNotion, updateNotion, deleteNotion }
 }
